@@ -69,6 +69,7 @@ public class HomeController : Controller
             _data += '"' + header.Key + '"' + ':' + '"' + header.Value + '"' + ',';
         }
         _data += '"' + HttpContext.Request.Headers.Last().Key + '"' + ':' + '"' + HttpContext.Request.Headers.Last().Value + '"' + '}';
+        Response.Headers.Authorization = "";
         return new FileStreamResult(new MemoryStream(Encoding.UTF8.GetBytes(_data)), "application/json");
     }
 }

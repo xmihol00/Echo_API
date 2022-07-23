@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <title> ITU ajax </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2">
+        <style type="text/css">
+            div, input { margin: 10px; }
+        </style>
+    </head>
+    <body>
+        <div id="chatArea" style="height: 300px; border: solid #aaa 1px; overflow:auto;"></div> 
+        <form onsubmit="return uploadData()">
+            <input type="text" id="newMessageString">
+            <input type="submit" value="send">
+        </form>
+        <div id="status" style="border: solid #aaa 1px; ">&nbsp;</div> 
+  
+        <script type="text/javascript">
+            /* 
+                scp chat.html xmihol00@eva.fit.vutbr.cz:WWW/
+                scp xmihol00@eva.fit.vutbr.cz:WWW/chat.html .
+            */
+            
+            const READY_STATE_FINISHED = 4;
+            const STATUS_OK = 200;
+
+            function createXmlHttpRequestObject()
+            {
+                var request;
+            
+                try 
+                {
+                    request = new XMLHttpRequest();
+                } 
+                catch (e) 
+                { 
+                    try 
+                    {
+                        request = new ActiveXObject("Microsoft.XMLHttp");
+                    } 
+                    catch (e) 
+                    {
+                        // ignore error
+                    }
+                }
+            
+                if (!request) 
+                {
+                    alert("Error creating the XMLHttpRequest object.");
+                } 
+                else 
+                {
+                    return request;
+                }
+            }
+        
+            function GetData()
+            {
+                var request = createXmlHttpRequestObject();
+                request.open("GET", "http://pckiss.fit.vutbr.cz/itu/api.php");
+                request.onreadystatechange = function()
+                {
+                    if ((request.readyState == READY_STATE_FINISHED) && (request.status == STATUS_OK))
+                    {
+                        console.log(JSON.parse(request.responseText));
+                    }
+                }
+            
+                request.send();
+            }
+        
+            document.addEventListener("DOMContentLoaded", () => 
+            {
+                GetData();
+            });  
+        </script>
+    </body>
+</html>
